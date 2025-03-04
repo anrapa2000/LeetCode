@@ -47,12 +47,12 @@ var isValid = function(s) {
         return false
     }
     for(let char of s){
+        console.log("output char", output[char])
         if(output[char]){
             stack.push(char)
         }
         else {
             const openBracket = stack.pop()
-            console.log(char, output[openBracket])
             if(char !== output[openBracket])
                 return false
         }
@@ -60,5 +60,5 @@ var isValid = function(s) {
     return stack.length === 0 ? true : false
 };
 
-const string = isValid("((");
+const string = isValid("()");
 console.log(string)
