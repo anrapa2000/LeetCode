@@ -5,6 +5,7 @@ class TreeNode(object):
         self.left = left
         self.right = right
 
+
 class Solution(object):
     def isSubtree(self, root, subRoot):
         """
@@ -12,21 +13,23 @@ class Solution(object):
         :type subRoot: Optional[TreeNode]
         :rtype: bool
         """
-        def isIdentical(root, subRoot):
-            if root is None and subRoot is None:
+
+        def isIdentical(p, q):
+            if p is None and q is None:
                 return True
-            if root is None or subRoot is None:
+            if not p or not q:
                 return False
-            if root.val != subRoot.val:
+            if p.val != q.val:
                 return False
-            return isIdentical(root.left, subRoot.left) and isIdentical(root.right, subRoot.right)
-        
+            return isIdentical(p.left, q.left) or isIdentical(p.right, q.right)
+
         if root is None:
             return False
         if isIdentical(root, subRoot):
             return True
         return self.isSubtree(root.left, subRoot) or self.isSubtree(root.right, subRoot)
-            
+
+
 # root = TreeNode(3)
 # root.left = TreeNode(4)
 # root.right = TreeNode(5)

@@ -10,15 +10,16 @@ class Solution:
     def lowestCommonAncestor(
         self, root: "TreeNode", p: "TreeNode", q: "TreeNode"
     ) -> "TreeNode":
-        if not root:
-            return
+        if root is None:
+            return None
         if root == p or root == q:
             return root
-        leftNode = self.lowestCommonAncestor(root.left, p, q)
-        rightNode = self.lowestCommonAncestor(root.right, p, q)
-        if leftNode and rightNode:
-            return root
-        return leftNode or rightNode
+        if p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+        if p.val < root and q.val < root:
+            return self.lowestCommonAncestor(root.left, p, q)
+        return root
+        
 
 
 def build_tree_from_list(lst):
