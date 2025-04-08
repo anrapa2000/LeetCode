@@ -18,18 +18,25 @@ class Solution:
             slow = slow.next
             fast = fast.next.next
 
-        prev, curr = None, slow
+        prev = None
+        curr = slow
+
         while curr:
             temp = curr.next
             curr.next = prev
             prev = curr
             curr = temp
-        print(prev.val)
 
-        first, second = head, prev
-        while second.next:  # IDK
-            first.next, first = second, first.next
-            second.next, second = first, second.next
+        first = head
+        second = slow
+        while second is not None:
+            temp = first.next
+            first.next = second
+            first = temp
+
+            temp = second.next
+            second.next = first
+            second = temp
 
 
 root = ListNode(1)

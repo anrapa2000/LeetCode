@@ -1,26 +1,24 @@
-
 from typing import Optional
+
 
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
         self.next = next
+
+
 class Solution:
     def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
-        dummy = ListNode(0)
-        dummy.next = head
-        left = dummy
-        right = head
+        dummyNode = ListNode()
+        dummyNode.next = head
+        first = second = dummyNode
+        for i in range(n + 1):
+            first = first.next
 
-        while n > 0 and right is not None:
-            right = right.next
-            n -=1
+        while first is not None:
+            first = first.next
+            second = second.next
 
-        while left is not None and right is not None:
-            left = left.next
-            right = right.next
-
-        left.next = left.next.next
-
-        return head
+        second.next = second.next.next
+        return dummyNode.next
