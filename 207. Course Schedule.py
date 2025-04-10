@@ -63,35 +63,64 @@
 #         return nodesVisited == numCourses
 
 
+# class Solution:
+#     def dfs(self, visited, pathStack, key, adjList):
+#         visited[key] = True
+#         pathStack[key] = True
+
+#         for node in adjList[key]:
+#             if not visited[node]:
+#                 if self.dfs(visited, pathStack, node, adjList):
+#                     return True
+#             elif pathStack[node]:
+#                 return True
+#         pathStack[key] = False
+#         return False
+
+#     def canFinish(self, numCourses, prerequisites):
+#         if len(prerequisites) == 0:
+#             return True
+
+#         visited = [False] * numCourses
+#         pathStack = [False] * numCourses
+#         adjList = [[] for _ in range(numCourses)]
+
+#         for prerequisite in prerequisites:
+#             adjList[prerequisite[1]].append(prerequisite[0])
+
+#         for key in range(numCourses):
+#             if not visited[key]:
+#                 if self.dfs(visited, pathStack, key, adjList):
+#                     return False
+#         return True
+
+
 class Solution:
-    def dfs(self, visited, pathStack, key, adjList):
-        visited[key] = True
-        pathStack[key] = True
-
-        for node in adjList[key]:
-            if not visited[node]:
-                if self.dfs(visited, pathStack, node, adjList):
-                    return True
-            elif pathStack[node]:
-                return True
-        pathStack[key] = False
-        return False
-
     def canFinish(self, numCourses, prerequisites):
-        if len(prerequisites) == 0:
-            return True
-
-        visited = [False] * numCourses
-        pathStack = [False] * numCourses
         adjList = [[] for _ in range(numCourses)]
-
+        visited = [False] * (numCourses)
         for prerequisite in prerequisites:
             adjList[prerequisite[1]].append(prerequisite[0])
 
-        for key in range(numCourses):
-            if not visited[key]:
-                if self.dfs(visited, pathStack, key, adjList):
+        visitedCoursesPath = [False] * numCourses
+
+        def dfs(node):
+            if visitedCoursesPath[node]:
+                return False
+            if visited[node]:
+                return True
+            visitedCoursesPath[node] = True
+            for neighbour in adjList[node]:
+                value = dfs(neighbour)
+                if value is False:
                     return False
+            visitedCoursesPath[node] = False
+            visited[node] = True
+            return True
+
+        for course in range(numCourses):
+            if not dfs(course):
+                return False
         return True
 
 
