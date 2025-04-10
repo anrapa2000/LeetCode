@@ -57,60 +57,85 @@
 #             i = parent
 
 
-class KthLargest(object):
+# class KthLargest(object):
 
+#     def __init__(self, k, nums):
+#         """
+#         :type k: int
+#         :type nums: List[int]
+#         """
+#         self.k = k
+#         self.minHeap = []
+
+#         for num in nums:
+#             self.add(num)
+
+#     def heapify_up(self, index):
+#         while index > 0:
+#             parent = (index - 1) // 2
+#             if self.minHeap[index] < self.minHeap[parent]:
+#                 self.minHeap[index], self.minHeap[parent] = (
+#                     self.minHeap[parent],
+#                     self.minHeap[index],
+#                 )
+#                 index = parent
+#             else:
+#                 break
+
+#     def heapify_down(self, index):
+#         left = 2 * index + 1
+#         right = 2 * index + 2
+#         smallValue = index
+
+#         if left < self.k and self.minHeap[left] < self.minHeap[smallValue]:
+#             smallValue = left
+
+#         if right < self.k and self.minHeap[right] < self.minHeap[smallValue]:
+#             smallValue = right
+
+#         if smallValue != index:
+#             self.minHeap[smallValue], self.minHeap[index] = (
+#                 self.minHeap[index],
+#                 self.minHeap[smallValue],
+#             )
+#             self.heapify_down(smallValue)
+
+#     def add(self, val):
+#         """
+#         :type val: int
+#         :rtype: int
+#         """
+#         if len(self.minHeap) < self.k:
+#             self.minHeap.append(val)
+#             self.heapify_up(len(self.minHeap) - 1)
+#         elif val > self.minHeap[0]:
+#             self.minHeap[0] = val
+#             self.heapify_down(0)
+#         return self.minHeap[0]
+
+import heapq
+
+
+class KthLargest(object):
     def __init__(self, k, nums):
         """
         :type k: int
         :type nums: List[int]
         """
+        self.minHeap = nums
         self.k = k
-        self.minHeap = []
-
-        for num in nums:
-            self.add(num)
-
-    def heapify_up(self, index):
-        while index > 0:
-            parent = (index - 1) // 2
-            if self.minHeap[index] < self.minHeap[parent]:
-                self.minHeap[index], self.minHeap[parent] = (
-                    self.minHeap[parent],
-                    self.minHeap[index],
-                )
-                index = parent
-            else:
-                break
-
-    def heapify_down(self, index):
-        left = 2 * index + 1
-        right = 2 * index + 2
-        smallValue = index
-
-        if left < self.k and self.minHeap[left] < self.minHeap[smallValue]:
-            smallValue = left
-
-        if right < self.k and self.minHeap[right] < self.minHeap[smallValue]:
-            smallValue = right
-
-        if smallValue != index:
-            self.minHeap[smallValue], self.minHeap[index] = (
-                self.minHeap[index],
-                self.minHeap[smallValue],
-            )
-            self.heapify_down(smallValue)
+        heapq.heapify(self.minHeap)
+        while len(self.minHeap) > k:
+            heapq.heappop(self.minHeap)
 
     def add(self, val):
         """
         :type val: int
         :rtype: int
         """
-        if len(self.minHeap) < self.k:
-            self.minHeap.append(val)
-            self.heapify_up(len(self.minHeap) - 1)
-        elif val > self.minHeap[0]:
-            self.minHeap[0] = val
-            self.heapify_down(0)
+        heapq.heappush(val)
+        if len(self.minHeap) > self.k:
+            heapq.heappop(self.minHeap)
         return self.minHeap[0]
 
 
