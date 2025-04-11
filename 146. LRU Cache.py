@@ -1,52 +1,50 @@
 class Node:
     def __init__(self, key, value):
+        self.key = key
+        self.value = value
         self.next = None
         self.prev = None
-        self.value = value
-        self.key = key
 
 
 class LRUCache:
     def __init__(self, capacity):
         self.capacity = capacity
+        self.hashMap = {}
         self.head = Node(0, 0)
         self.tail = Node(0, 0)
-        self.hash = {}
         self.head.next = self.tail
         self.tail.prev = self.head
 
     def put(self, key, value):
-        if key in self.hash:
-            node = self.hash[key]
-            self.remove(node)
+        if key in self.hashMap:
+            self.remove(self.hashMap[key])
 
-        if len(self.hash) >= self.capacity:
-            delNode = self.head.next
-            self.remove(delNode)
-            del self.hash[delNode.key]
+        node = Node(key, value)
+        self.hashMap[key] = node
+        self.add(node)
 
-        newNode = Node(key, value)
-        self.add(newNode)
-        self.hash[key] = newNode
-
-        print(self.hash)
+        if len(self.hashMap) > self.capacity:
+            del self.hashMap[self.head.next.key]
+            self.remove(self.head.next)
 
     def remove(self, node):
         node.prev.next = node.next
         node.next.prev = node.prev
 
     def add(self, node):
-        self.tail.prev.next = node
-        node.prev = self.tail.prev
+        end = self.tail.prev
+        end.next = node
+        node.prev = end
         node.next = self.tail
         self.tail.prev = node
 
     def get(self, key):
-        if key not in self.hash:
+        if key not in self.hashMap:
             return -1
-        self.remove(self.hash[key])
-        self.add(self.hash[key])
-        return self.hash[key].value
+        node = self.hashMap[key]
+        self.remove(node)
+        self.add(node)
+        return node.val
 
 
 # obj = LRUCache(2)

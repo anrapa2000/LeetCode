@@ -5,16 +5,13 @@ class Solution(object):
         :rtype: List[int]
         """
         stack = []
-        answers = [0] * len(temperatures)
-
-        for i,j in enumerate(temperatures):
-            while stack and j > stack[-1][0]:
-                a, b = stack.pop()
-                answers[b] = i - b
-            else: 
-                stack.append((j, i))
-        return answers
-
+        result = [0] * len(temperatures)
+        for i in range(len(temperatures)):
+            while stack and temperatures[i] > stack[-1][0]:
+                temp, index = stack.pop()
+                result[index] = (i - index) 
+            stack.append([temperatures[i], i])
+        return result
 
 value = Solution()
 
